@@ -1,0 +1,5 @@
+tag: dev
+
+web:
+  replicaCount: 1
+  image: okteto.dev/web

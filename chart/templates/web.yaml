@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: web
+  labels:
+    component: web
+    {{- include "tryingout.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      component: web
+      {{- include "tryingout.labels" . | nindent 6 }}
+  template:
+    metadata:
+      labels:
+        component: web
+        {{- include "tryingout.labels" . | nindent 8 }}
+    spec:
+      containers:
+      - name: web
+        image: {{ .Values.web.image }}:{{ .Values.tag }}
+        ports:
+        - containerPort: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: web
+  labels:
+    component: web
+    {{- include "tryingout.labels" . | nindent 4 }}
+spec:
+  selector:
+    component: web
+    {{- include "tryingout.labels" . | nindent 4 }}
+  ports:
+    - protocol: TCP
+      port: 3000
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: {{ include "tryingout.fullname" . }}
+  labels:
+    {{- include "tryingout.labels" . | nindent 4 }}
+  annotations:
+    dev.okteto.com/generate-host: "true"
+spec:
+  rules:
+    - http:
+        paths:
+          - path: /
+            backend:
+              serviceName: web
+              servicePort: 3000
