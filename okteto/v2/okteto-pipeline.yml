@@ -1,0 +1,5 @@
+deploy:
+  - okteto build -t okteto.dev/web:${OKTETO_GIT_COMMIT} web
+  - helm upgrade --install tryingout chart --set tag=${OKTETO_GIT_COMMIT}
+devs:
+  - web/okteto.yml
