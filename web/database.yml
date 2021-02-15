@@ -1,10 +1,10 @@
 ---
 development:
   dialect: postgres
-  database: trying_out_development
+  database: trying_out_production
   user: postgres
   password: postgres
-  host: 127.0.0.1
+  host: db
   pool: 5
 
 test:
