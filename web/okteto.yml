@@ -1,4 +1,4 @@
-name: buffalo
+name: web
 image: gobuffalo/buffalo:v0.16.21
 command: bash
 securityContext:
