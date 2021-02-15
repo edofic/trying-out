@@ -23,6 +23,8 @@ spec:
         env:
         - name: POSTGRES_PASSWORD
           value: "postgres"
+        - name: POSTGRES_DB
+          value: "trying_out_production"
         ports:
         - containerPort: 5432
 ---
