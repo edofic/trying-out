@@ -1,0 +1,35 @@
+version: '3.7'
+
+volumes:
+    prometheus_data:
+    grafana_data:
+    go:
+
+services:
+  prometheus:
+    image: prom/prometheus:v2.28.0
+    volumes:
+      - ./prometheus_config/:/etc/prometheus/
+      - prometheus_data:/prometheus
+    command:
+      - '--config.file=/etc/prometheus/prometheus.yml'
+      - '--storage.tsdb.path=/prometheus'
+    ports:
+      - 9090:9090
+
+  grafana:
+    image: grafana/grafana:8.0.3
+    ports:
+      - 3000:3000
+    volumes:
+      - grafana_data:/var/lib/grafana
+
+  app:
+    image: golang:1.16-alpine
+    volumes:
+      - ./app:/go/src/app
+      - go:/go
+    working_dir: /go/src/app
+    command: go run github.com/mitranim/gow run .
+    ports:
+      - 2112:2112
